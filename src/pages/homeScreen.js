@@ -1,31 +1,19 @@
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../component/searchBar';
-import yelp from '../component/api/yelpApi';
+import useResult from '../component/hook/useResult';
+import ProductList from './productList';
+// import yelp from '../component/api/yelpApi';
 
 const HomeScreen = () => {
   const [term, setTerm] = useState('');
-  const [product, setProduct] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+  const [searchApi, product, errorMessage] = useResult();
 
-  const searchApi = async searchTerm => {
-
-    try {
-         
-        const response = await yelp.get('/search', {
-          params: {
-            limit: 50,
-            term:searchTerm,
-            location: 'san jose'
-          },
-        });
-        setProduct(response.data.businesses);
-    } catch(error) {
-
-        //Error Handling
-        setErrorMessage('414, Something went wrong')
-    }
-  };
+  const filterProductByPrice = (price) => {
+    return product.filter(prod => {
+      return prod.price === price;
+    })
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -37,10 +25,16 @@ const HomeScreen = () => {
         />
       </View>
       <View style={styles.result}>
-        <Text>Search Result</Text>
+        <Text style={styles.textTitle}>Search Result</Text>
         {errorMessage ? <Text>{errorMessage}</Text> : null}
-        <Text>Ditemukan {product.length} Product </Text>
+        <Text style={styles.textTitle}>Ditemukan {product.length} Product </Text>
+
       </View>
+        <ScrollView>
+          <ProductList product={filterProductByPrice('$')} title="Low Price"/>
+          <ProductList product={filterProductByPrice('$$')} title="Middle Price"/>
+          <ProductList product={filterProductByPrice('$$$')} title="High Price"/>
+        </ScrollView>
     </ScrollView>
   );
 };
@@ -52,6 +46,14 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   result: {
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
+  textTitle: {
+    fontSize: 12,
+    color: '#967E76'
+  }
 });
