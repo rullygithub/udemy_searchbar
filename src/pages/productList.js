@@ -1,8 +1,14 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ProductDetail from './productDetail'
+import { useNavigation } from '@react-navigation/native'
 
-const ProductList = ({title, product, navigation}) => {
+const ProductList = ({title, product}) => {
+  const navigation = useNavigation();
+
+  if(!product.length) {
+    return null;
+  }
   return (
     <View>
       <Text style={styles.title}>{title}</Text>
