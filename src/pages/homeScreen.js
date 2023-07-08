@@ -5,7 +5,7 @@ import useResult from '../component/hook/useResult';
 import ProductList from './productList';
 // import yelp from '../component/api/yelpApi';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [term, setTerm] = useState('');
   const [searchApi, product, errorMessage] = useResult();
 
@@ -31,9 +31,9 @@ const HomeScreen = () => {
 
       </View>
         <ScrollView>
-          <ProductList product={filterProductByPrice('$')} title="Low Price"/>
-          <ProductList product={filterProductByPrice('$$')} title="Middle Price"/>
-          <ProductList product={filterProductByPrice('$$$')} title="High Price"/>
+          <ProductList product={filterProductByPrice('$')} navigation={navigation} title="Low Price"/>
+          <ProductList product={filterProductByPrice('$$')} navigation={navigation} title="Middle Price"/>
+          <ProductList product={filterProductByPrice('$$$')} navigation={navigation} title="High Price"/>
         </ScrollView>
     </ScrollView>
   );

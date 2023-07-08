@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ProductDetail from './productDetail'
 
-const ProductList = ({title, product}) => {
+const ProductList = ({title, product, navigation}) => {
   return (
     <View>
       <Text style={styles.title}>{title}</Text>
@@ -13,7 +13,10 @@ const ProductList = ({title, product}) => {
         keyExtractor={(pro) => pro.id }
         renderItem={({item}) => {
             return (
+              <TouchableOpacity onPress={() => navigation.navigate('list', {id: item.id})}>
                 <ProductDetail product={item} />
+
+              </TouchableOpacity>
             )
         }}
 
@@ -22,7 +25,7 @@ const ProductList = ({title, product}) => {
   )
 }
 
-export default ProductList
+export default ProductList;
 
 const styles = StyleSheet.create({
     title: {
